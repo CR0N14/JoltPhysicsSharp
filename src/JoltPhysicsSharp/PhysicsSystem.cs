@@ -285,6 +285,16 @@ public sealed unsafe class PhysicsSystem : NativeObject
         JPH_PhysicsSystem_RemoveStepListener(Handle, listener.Handle);
     }
 
+    public void SaveState(IStateRecorder stream, EStateRecorderState state = EStateRecorderState.All, IStateRecorderFilter? filter = default)
+    {
+        JPH_PhysicsSystem_SaveState(Handle, stream.Handle, state, filter.Handle != null ? filter.Handle : 0);
+    }
+
+    public void RestoreState(IStateRecorder stream, IStateRecorderFilter? filter = default)
+    {
+        JPH_PhysicsSystem_RestoreState(Handle, stream.Handle, filter.Handle != null ? filter.Handle : 0);
+    }
+
     public void DrawBodies(in DrawSettings settings, DebugRenderer renderer, BodyDrawFilter? bodyDrawFilter = default)
     {
         fixed (DrawSettings* settingsPtr = &settings)

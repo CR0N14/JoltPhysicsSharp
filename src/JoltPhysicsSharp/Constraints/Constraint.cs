@@ -115,4 +115,6 @@ public abstract class Constraint : NativeObject
     {
         return JPH_Constraint_SolvePositionConstraint(Handle, deltaTime, baumgarte);
     }
+
+    internal static Constraint? GetObject(nint handle) => GetOrAddObject(handle, h => new Constraint(h, false));
 }

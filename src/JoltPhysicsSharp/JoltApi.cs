@@ -388,6 +388,37 @@ internal static unsafe partial class JoltApi
     [LibraryImport(LibName)]
     public static partial void JPH_PhysicsStepListener_Destroy(nint handle);
 
+    // StateRecorder
+    [LibraryImport(LibName)]
+    public static partial void JPH_StateRecorder_SetValidating(nint handle, [MarshalAs(UnmanagedType.U1)] bool inValidating);
+
+    [LibraryImport(LibName)]
+    public static partial bool JPH_StateRecorder_IsValidating(nint handle);
+
+    [LibraryImport(LibName)]
+    public static partial void JPH_StateRecorder_SetIsLastPart(nint handle, [MarshalAs(UnmanagedType.U1)] bool inIsLastPart);
+
+    [LibraryImport(LibName)]
+    public static partial bool JPH_StateRecorder_IsLastPart(nint handle);
+
+    //  StateRecorderFilter
+    public struct JPH_StateRecorderFilter_Procs
+    {
+        public delegate* unmanaged<nint, nint, Bool8> ShouldSaveBody;
+        public delegate* unmanaged<nint, nint, Bool8> ShouldSaveConstraint;
+        public delegate* unmanaged<nint, BodyID, BodyID, Bool8> ShouldSaveContact;
+        public delegate* unmanaged<nint, BodyID, BodyID, Bool8> ShouldRestoreContact;
+    }
+
+    [LibraryImport(LibName)]
+    public static partial void JPH_StateRecorderFilter_SetProcs(in JPH_StateRecorderFilter_Procs procs);
+
+    [LibraryImport(LibName)]
+    public static partial nint JPH_StateRecorderFilter_Create(nint userData);
+
+    [LibraryImport(LibName)]
+    public static partial void JPH_StateRecorderFilter_Destroy(nint handle);
+
     #region GroupFilter
     public struct JPH_CollisionGroup
     {
@@ -1675,6 +1706,12 @@ internal static unsafe partial class JoltApi
 
     [LibraryImport(LibName)]
     public static partial void JPH_PhysicsSystem_RemoveStepListener(nint handle, nint listener);
+
+    [LibraryImport(LibName)]
+    public static partial void JPH_PhysicsSystem_SaveState(nint handle, nint stream, EStateRecorderState state, nint filter);
+
+    [LibraryImport(LibName)]
+    public static partial void JPH_PhysicsSystem_RestoreState(nint handle, nint stream, nint filter);
 
     [LibraryImport(LibName)]
     public static partial void JPH_PhysicsSystem_GetBodies(nint handle, BodyID* ids, uint count);
